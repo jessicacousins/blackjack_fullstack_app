@@ -30,7 +30,7 @@ const generateDeck = () => {
   return deck;
 };
 
-// Utility to calculate hand value
+// Utility to calculate hand value, handling Aces and face cards correctly
 const calculateHandValue = (hand) => {
   let value = 0;
   let aceCount = 0;
@@ -46,7 +46,7 @@ const calculateHandValue = (hand) => {
     }
   });
 
-  // Handle Aces (11 or 1)
+  // Handle Aces (count as 1 if needed to avoid busting)
   while (value > 21 && aceCount > 0) {
     value -= 10;
     aceCount -= 1;
@@ -64,8 +64,8 @@ const BlackjackGame = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [playerTotal, setPlayerTotal] = useState(0);
   const [dealerTotal, setDealerTotal] = useState(0);
-  const [playerWins, setPlayerWins] = useState(false); // Track if player wins
-  const [tie, setTie] = useState(false); // Track if there's a tie
+  const [playerWins, setPlayerWins] = useState(false);
+  const [tie, setTie] = useState(false);
 
   // Shuffling the deck
   const shuffleDeck = (newDeck) => {
@@ -79,25 +79,22 @@ const BlackjackGame = () => {
 
   // Starting a new game
   const dealInitialCards = () => {
-    const newDeck = shuffleDeck(generateDeck()); // Generate and shuffle a fresh deck
-    setDeck(newDeck); // Set the shuffled deck to the state
+    const newDeck = shuffleDeck(generateDeck());
+    setDeck(newDeck);
     const initialPlayerHand = [newDeck[0], newDeck[2]];
     const initialDealerHand = [newDeck[1], newDeck[3]];
-    setPlayerHand(initialPlayerHand); // Deal player cards
-    setDealerHand(initialDealerHand); // Deal dealer cards
-    setPlayerTotal(calculateHandValue(initialPlayerHand)); // Calculate player hand total
-    setDealerTotal(calculateHandValue([newDeck[1]])); // Show only dealer's first card total
-    setGameStarted(true); // Set the game to started
-    setGameOver(false); // Reset game over state
-    setPlayerTurn(true); // Reset player's turn
-    setPlayerWins(false); // Reset player win state
-    setTie(false); // Reset tie state
+    setPlayerHand(initialPlayerHand);
+    setDealerHand(initialDealerHand);
+    setPlayerTotal(calculateHandValue(initialPlayerHand));
+    setDealerTotal(calculateHandValue([newDeck[1]])); // Dealer's first card
+    setGameStarted(true);
+    setGameOver(false);
+    setPlayerTurn(true);
+    setPlayerWins(false);
+    setTie(false);
   };
 
-  const getCardImage = (card) => {
-    return `/images/${card.value}_of_${card.suit}.png`; // Image for each card
-  };
-
+  // Handling player hit
   const handleHit = () => {
     const newCard = deck.pop();
     const newPlayerHand = [...playerHand, newCard];
@@ -109,15 +106,17 @@ const BlackjackGame = () => {
       // Player busts
       setGameOver(true);
       setPlayerTurn(false);
-      setPlayerWins(false); // Player loses
+      setPlayerWins(false);
     }
   };
 
+  // Handling stand, calculate the dealer's final hand
   const handleStand = () => {
     setPlayerTurn(false);
     setDealerTotal(calculateHandValue(dealerHand)); // Reveal dealer's full total
   };
 
+  // Reset the game
   const resetGame = () => {
     setPlayerHand([]);
     setDealerHand([]);
@@ -128,28 +127,29 @@ const BlackjackGame = () => {
     setTie(false);
   };
 
+  // Determine the winner after dealer finishes drawing cards
   const checkForWinner = () => {
     const playerValue = calculateHandValue(playerHand);
     const dealerValue = calculateHandValue(dealerHand);
 
     if (playerValue > 21) {
-      // If player busts, dealer wins
+      // Player busts
       setGameOver(true);
       setPlayerWins(false);
     } else if (dealerValue > 21) {
-      // If dealer busts, player wins
-      setGameOver(true);
-      setPlayerWins(true);
-    } else if (playerValue > dealerValue) {
-      // Player has a higher value than dealer
+      // Dealer busts, player wins
       setGameOver(true);
       setPlayerWins(true);
     } else if (dealerValue > playerValue) {
-      // Dealer has a higher value than player
+      // Dealer has a higher value than the player and doesn't bust
       setGameOver(true);
       setPlayerWins(false);
+    } else if (playerValue > dealerValue) {
+      // Player has a higher value than the dealer and doesn't bust
+      setGameOver(true);
+      setPlayerWins(true);
     } else {
-      // It's a tie
+      // Tie game
       setGameOver(true);
       setTie(true);
     }
@@ -168,7 +168,7 @@ const BlackjackGame = () => {
       }
 
       setDealerHand(newHand);
-      setDealerTotal(dealerValue); // Update dealer's total
+      setDealerTotal(dealerValue);
       checkForWinner();
     }
   }, [playerTurn]);
@@ -176,7 +176,7 @@ const BlackjackGame = () => {
   return (
     <div className="blackjack-game">
       <h1>Blackjack</h1>
-      {playerWins && <Confetti />} {/* Confetti only appears if player wins */}
+      {playerWins && <Confetti />} {/* Confetti for player wins */}
       {!gameStarted ? (
         <button className="start-button" onClick={dealInitialCards}>
           Start Game
@@ -205,25 +205,32 @@ const BlackjackGame = () => {
               <div className="cards">
                 {dealerHand.map((card, index) => (
                   <div className="card" key={index}>
-                    <div className={`card-content ${card.suit}`}>
-                      {playerTurn && index === 0 ? (
-                        <img src="/images/cardBack.png" alt="Card Back" />
-                      ) : (
-                        <>
-                          <span className="card-value">{card.value}</span>
-                          <span className="card-suit">{card.suit}</span>
-                        </>
-                      )}
-                    </div>
+                    {playerTurn && index === 0 ? (
+                      <div className="card-back"></div> // Only show back of card for the first dealer card
+                    ) : (
+                      <div className={`card-content ${card.suit}`}>
+                        <span className="card-value">{card.value}</span>
+                        <span className="card-suit">{card.suit}</span>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
           </div>
           <div className="controls">
-            {playerTurn && <button onClick={handleHit}>Hit</button>}
-            {playerTurn && <button onClick={handleStand}>Stand</button>}
+            {playerTurn && (
+              <button className="hit-button" onClick={handleHit}>
+                Hit
+              </button>
+            )}
+            {playerTurn && (
+              <button className="stand-button" onClick={handleStand}>
+                Stand
+              </button>
+            )}
           </div>
+
           {gameOver && (
             <>
               <p>

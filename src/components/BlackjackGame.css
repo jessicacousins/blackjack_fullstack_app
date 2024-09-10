@@ -1,18 +1,197 @@
-.blackjack-game {
-  text-align: center;
-  font-family: Arial, sans-serif;
-  color: #333;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #2a2a72, #009ffd);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hands {
-  display: flex;
-  justify-content: space-around;
-  margin: 40px 0;
+.blackjack-game {
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  color: #fff;
+}
+
+h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+  animation: fadeInDown 1s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Blackjack Rules container */
+.rules-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  animation: fadeInUp 1.2s ease-out;
+  font-size: 16px;
+}
+
+.rules-container h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.rules-container ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.rules-container li {
+  margin-bottom: 10px;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.start-button {
+  padding: 20px 40px;
+  font-size: 20px;
+  background-color: #f44336;
+  color: white;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: pulse 1.5s infinite;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.start-button:hover {
+  background-color: #ff7961;
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7), 0 0 60px rgba(255, 0, 0, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 0, 0, 0.2);
+  }
+}
+
+.reset-button {
+  padding: 15px 30px;
+  font-size: 18px;
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.reset-button:hover {
+  background-color: #e64a19;
+}
+
+button:focus {
+  outline: none;
+}
+
+.hit-button {
+  margin: 2rem;
+  padding: 20px 40px;
+  font-size: 20px;
+  background-color: #4caf50;
+  color: white;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: pulse 1.5s infinite;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.hit-button:hover {
+  background-color: #66bb6a;
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.stand-button {
+  padding: 20px 40px;
+  font-size: 20px;
+  background-color: #2196f3;
+  color: white;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: pulse 1.5s infinite;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.stand-button:hover {
+  background-color: #64b5f6;
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.controls {
+  margin-top: 20px;
+  animation: fadeInUp 1s ease-out;
+}
+
+/* Animation for rules and start button */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.rules-title {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.rules-container {
+  margin-top: 40px;
 }
 
 .cards {
   display: flex;
   justify-content: center;
+  margin: 20px 0;
 }
 
 .card {
@@ -21,18 +200,12 @@
   margin: 10px;
   border-radius: 10px;
   background-color: white;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden;
-}
-
-.card-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  font-size: 24px;
+  border: 2px solid #ddd;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  transform: perspective(600px) rotateY(0deg);
+  transition: transform 0.6s ease;
 }
 
 .card img {
@@ -60,50 +233,21 @@
   font-size: 24px;
 }
 
-.controls {
-  margin-top: 20px;
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #333;
+  font-family: "Poppins", sans-serif;
 }
 
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  background-color: #28a745;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-  margin: 5px;
-}
-
-button:hover {
-  background-color: #218838;
-}
-
-.start-button {
-  padding: 15px 30px;
-  font-size: 18px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.start-button:hover {
-  background-color: #0056b3;
-}
-
-.reset-button {
-  padding: 15px 30px;
-  font-size: 18px;
-  background-color: #ff5722;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 20px;
-}
-
-.reset-button:hover {
-  background-color: #e64a19;
+.card-back {
+  width: 100px;
+  height: 150px;
+  background: url("/images/cardBack.png") no-repeat center center;
+  background-size: cover;
+  border-radius: 10px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
 }
