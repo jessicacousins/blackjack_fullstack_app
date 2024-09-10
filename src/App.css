@@ -4,3 +4,103 @@
   padding: 2rem;
   text-align: center;
 }
+
+/* General body styling */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #2a2a72, #009ffd);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.App {
+  text-align: center;
+}
+
+/* Styling the rules section */
+.rules {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 1s ease;
+  max-width: 90%;
+  width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid #fff;
+}
+
+.rules h2 {
+  font-size: 28px;
+  color: #ffd700;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  animation: pop 1s ease;
+}
+
+.rules p {
+  font-size: 18px;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.rules ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.rules li {
+  font-size: 18px;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  position: relative;
+  text-align: left;
+}
+
+/* Adding fun icons */
+/* .rules li::before {
+  content: "⭐"; 
+  position: absolute;
+  left: 0;
+  font-size: 18px;
+  color: #ffd700;
+} */
+
+.emoji {
+  font-size: 28px;
+  margin-right: 10px;
+  color: rgb(255, 215, 0);
+  text-shadow: 0 0 5px rgba(255, 255, 0, 0.8), 0 0 10px rgba(255, 255, 0, 0.6);
+  display: inline-block;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
