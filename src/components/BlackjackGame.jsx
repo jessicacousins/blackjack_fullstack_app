@@ -127,35 +127,31 @@ const BlackjackGame = () => {
     setTie(false);
   };
 
-  // Determine the winner after dealer finishes drawing cards
   const checkForWinner = () => {
     const playerValue = calculateHandValue(playerHand);
     const dealerValue = calculateHandValue(dealerHand);
 
+    console.log("Player Total:", playerValue);
+    console.log("Dealer Total:", dealerValue);
+
     if (playerValue > 21) {
-      // Player busts
       setGameOver(true);
       setPlayerWins(false);
     } else if (dealerValue > 21) {
-      // Dealer busts, player wins
       setGameOver(true);
       setPlayerWins(true);
     } else if (dealerValue > playerValue) {
-      // Dealer has a higher value than the player and doesn't bust
       setGameOver(true);
       setPlayerWins(false);
     } else if (playerValue > dealerValue) {
-      // Player has a higher value than the dealer and doesn't bust
       setGameOver(true);
       setPlayerWins(true);
-    } else {
-      // Tie game
+    } else if (playerValue === dealerValue) {
       setGameOver(true);
       setTie(true);
     }
   };
 
-  // Dealer's logic to hit until hand is at least 17
   useEffect(() => {
     if (!playerTurn && gameStarted) {
       let dealerValue = calculateHandValue(dealerHand);
@@ -168,15 +164,20 @@ const BlackjackGame = () => {
       }
 
       setDealerHand(newHand);
-      setDealerTotal(dealerValue);
-      checkForWinner();
+      setDealerTotal(dealerValue); //  set the dealer's total
     }
   }, [playerTurn]);
+
+  useEffect(() => {
+    if (gameOver || !playerTurn) {
+      checkForWinner();
+    }
+  }, [dealerHand]);
 
   return (
     <div className="blackjack-game">
       <h1>Blackjack</h1>
-      {playerWins && <Confetti />} {/* Confetti for player wins */}
+      {playerWins && <Confetti />}
       {!gameStarted ? (
         <button className="start-button" onClick={dealInitialCards}>
           Start Game
@@ -184,7 +185,7 @@ const BlackjackGame = () => {
       ) : (
         <>
           <div className="hands">
-            <div className="player-hand">
+            <div className={`player-hand ${playerWins ? "winner" : ""}`}>
               <h2>Your Hand (Total: {playerTotal})</h2>
               <div className="cards">
                 {playerHand.map((card, index) => (
@@ -197,7 +198,11 @@ const BlackjackGame = () => {
                 ))}
               </div>
             </div>
-            <div className="dealer-hand">
+            <div
+              className={`dealer-hand ${
+                !playerWins && !tie && gameOver ? "winner" : ""
+              }`}
+            >
               <h2>
                 Dealer's Hand (Total:{" "}
                 {playerTurn ? dealerTotal : calculateHandValue(dealerHand)})
@@ -206,7 +211,7 @@ const BlackjackGame = () => {
                 {dealerHand.map((card, index) => (
                   <div className="card" key={index}>
                     {playerTurn && index === 0 ? (
-                      <div className="card-back"></div> // Only show back of card for the first dealer card
+                      <div className="card-back"></div>
                     ) : (
                       <div className={`card-content ${card.suit}`}>
                         <span className="card-value">{card.value}</span>
