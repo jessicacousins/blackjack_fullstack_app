@@ -108,17 +108,40 @@ h1 {
 .reset-button {
   padding: 15px 30px;
   font-size: 18px;
-  background-color: #ff5722;
-  color: white;
+  background-color: #3dcf03;
+  color: #000;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
   cursor: pointer;
   margin-top: 20px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 0 15px rgba(61, 207, 3, 0.5), 0 0 40px rgba(61, 207, 3, 0.3),
+    0 0 80px rgba(61, 207, 3, 0.1);
+  animation: pulse1 1.5s infinite ease-in-out;
 }
 
 .reset-button:hover {
-  background-color: #e64a19;
+  background-color: #38a50c;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+@keyframes pulse1 {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(61, 207, 3, 0.5), 0 0 40px rgba(61, 207, 3, 0.3),
+      0 0 80px rgba(61, 207, 3, 0.1);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(61, 207, 3, 0.6), 0 0 60px rgba(61, 207, 3, 0.4),
+      0 0 100px rgba(61, 207, 3, 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(61, 207, 3, 0.5), 0 0 40px rgba(61, 207, 3, 0.3),
+      0 0 80px rgba(61, 207, 3, 0.1);
+  }
 }
 
 button:focus {
