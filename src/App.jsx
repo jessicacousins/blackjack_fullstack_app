@@ -1,18 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { auth } from "./firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import BlackjackGame from "./components/BlackjackGame";
+import SignUp from "./components/SignUp";
 import "./App.css";
 
 function App() {
   const [showRules, setShowRules] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const toggleRules = () => {
     setShowRules((prevState) => !prevState);
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+      console.log("User logged out");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   return (
     <div className="App">
       <button className="toggle-rules-button" onClick={toggleRules}>
-        {showRules ? "Hide Rules" : "Show Rules"}{" "}
+        {showRules ? "Hide Rules" : "Show Rules"}
       </button>
 
       {showRules && (
@@ -47,7 +71,16 @@ function App() {
         </div>
       )}
 
-      <BlackjackGame />
+      {user ? (
+        <>
+          <BlackjackGame />
+          <button className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+        </>
+      ) : (
+        <SignUp />
+      )}
     </div>
   );
 }

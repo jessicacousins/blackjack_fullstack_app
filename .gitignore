@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment files
+.env
+
+# Firebase files
+.firebase
+
+# Ignore firebase.js file
+/src/firebase.js
