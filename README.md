@@ -6,6 +6,10 @@ A simple Blackjack game built using React and Vite. The game allows players to p
 
 This is a web-based Blackjack game where the player can draw cards, stand, and attempt to beat the dealer by getting a hand value as close to 21 as possible without exceeding it.
 
+## Firebase Authentication Integration
+
+This project includes Firebase authentication, allowing users to sign up, log in, and log out using email/password or Google Authentication. Before playing the game, users must sign in via the authentication page. Once logged in, the game becomes accessible, and a logout button is provided to end the session. Please note, Firebase configuration (firebase.js) is not included in the repository and needs to be set up separately.
+
 ## Features
 
 - Shuffle and deal cards randomly at the start of each game.
@@ -17,9 +21,13 @@ This is a web-based Blackjack game where the player can draw cards, stand, and a
 
 ## Packages Used
 
+-## Packages Used
+
 - [React](https://reactjs.org/) - A JavaScript library for building user interfaces.
 - [Vite](https://vitejs.dev/) - A fast frontend build tool and development server.
 - [Confetti](https://www.npmjs.com/package/react-confetti) - A React package to create confetti animations.
+- [Firebase](https://firebase.google.com/) - A platform for backend services including authentication, database, and hosting.
+- [React Router](https://reactrouter.com/) - A standard library for routing in React applications.
 
 ## Installation and Running the App
 
