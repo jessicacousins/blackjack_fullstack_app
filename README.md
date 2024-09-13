@@ -21,8 +21,6 @@ This project includes Firebase authentication, allowing users to sign up, log in
 
 ## Packages Used
 
--## Packages Used
-
 - [React](https://reactjs.org/) - A JavaScript library for building user interfaces.
 - [Vite](https://vitejs.dev/) - A fast frontend build tool and development server.
 - [Confetti](https://www.npmjs.com/package/react-confetti) - A React package to create confetti animations.
