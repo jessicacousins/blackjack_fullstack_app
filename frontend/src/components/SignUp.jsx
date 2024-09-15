@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, googleProvider } from "../firebase";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import axios from "axios";
 import "./SignUp.css";
 
 const SignUp = () => {
@@ -43,13 +44,25 @@ const SignUp = () => {
     if (!validateInputs()) return;
 
     try {
+      // Register the user with Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      console.log("User created:", userCredential.user);
-      navigate("/");
+      const { user } = userCredential;
+
+      // Send the user data to the backend to store in MongoDB
+      await axios.post("http://localhost:5000/api/users/register", {
+        firstName,
+        lastName,
+        email,
+        password, // Send hashed password later on
+        uid: user.uid, // Firebase User ID
+      });
+
+      console.log("User created:", user);
+      navigate("/"); // Redirect after successful signup
     } catch (error) {
       setError(error.message);
     }
@@ -57,7 +70,19 @@ const SignUp = () => {
 
   const handleGoogleSignup = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      // Register the user using Google Authentication
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      const { user } = userCredential;
+
+      // Send the user data to the backend
+      await axios.post("http://localhost:5000/api/users/register", {
+        firstName: user.displayName.split(" ")[0],
+        lastName: user.displayName.split(" ")[1],
+        email: user.email,
+        uid: user.uid,
+      });
+
+      console.log("User signed up with Google:", user);
       navigate("/");
     } catch (error) {
       setError("Failed to sign up with Google. Please try again.");

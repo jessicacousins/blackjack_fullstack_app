@@ -30,4 +30,19 @@ dist-ssr
 .firebase
 
 # Ignore firebase.js file
-/src/firebase.js
+/frontend/src/firebase.js
+
+
+# Node modules for both frontend and backend
+/frontend/node_modules
+/backend/node_modules
+
+# Vite build output
+/frontend/dist
+
+# Logs
+logs
+*.log
+
+# .env file
+.env

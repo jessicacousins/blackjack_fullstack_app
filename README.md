@@ -19,13 +19,31 @@ This project includes Firebase authentication, allowing users to sign up, log in
 - Confetti animation when the player wins.
 - Play Again button to restart the game.
 
-## Packages Used
+## Packages Used - Frontend
 
 - [React](https://reactjs.org/) - A JavaScript library for building user interfaces.
 - [Vite](https://vitejs.dev/) - A fast frontend build tool and development server.
 - [Confetti](https://www.npmjs.com/package/react-confetti) - A React package to create confetti animations.
 - [Firebase](https://firebase.google.com/) - A platform for backend services including authentication, database, and hosting.
 - [React Router](https://reactrouter.com/) - A standard library for routing in React applications.
+
+#### Run the app:
+
+```
+npm run dev
+```
+
+## Packages Used - Backend
+
+- MongoDB
+- Express
+- Nodemon
+
+### Run the server
+
+```
+npx nodemon index.js
+```
 
 ## Installation and Running the App
 
