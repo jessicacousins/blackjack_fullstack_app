@@ -77,8 +77,8 @@ h1 {
 .start-button {
   padding: 20px 40px;
   font-size: 20px;
-  background-color: #f44336;
-  color: white;
+  background-color: #36f436;
+  color: #000;
   border: 2px solid #fff;
   border-radius: 50px;
   cursor: pointer;
@@ -88,7 +88,7 @@ h1 {
 }
 
 .start-button:hover {
-  background-color: #ff7961;
+  background-color: #79ec69;
   transform: scale(1.1);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
