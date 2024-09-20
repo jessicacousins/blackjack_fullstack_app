@@ -66,4 +66,53 @@ router.post("/update", async (req, res) => {
   }
 });
 
+// Get Top 10 Users by Score
+// Get Top 10 Users by Latest Score
+router.get("/top-scores", async (req, res) => {
+  try {
+    const topUsers = await User.aggregate([
+      { $unwind: "$scores" }, // Unwind the scores array
+      { $sort: { "scores.value": -1 } }, // Sort by the highest score
+      {
+        $group: {
+          _id: "$_id",
+          firstName: { $first: "$firstName" },
+          lastName: { $first: "$lastName" },
+          email: { $first: "$email" },
+          latestScore: { $first: "$scores.value" },
+        },
+      },
+      { $sort: { latestScore: -1 } }, // Sort by the latest score
+      { $limit: 10 }, // Limit to top 10
+    ]);
+    res.json(topUsers);
+  } catch (err) {
+    console.error("Error fetching top scores:", err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+// Update Player Score
+// Backend route example (userRoutes.js)
+// Update Player Score
+router.post("/update-score", async (req, res) => {
+  const { email, score } = req.body;
+
+  try {
+    let user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    // Add the new score with the current date
+    user.scores.push({ value: score });
+    await user.save();
+
+    res.status(200).json({ msg: "Score updated", user });
+  } catch (error) {
+    console.error("Error updating score:", error.message);
+    res.status(500).send("Server error");
+  }
+});
+
 module.exports = router;

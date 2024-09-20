@@ -1,6 +1,6 @@
 # Vite Blackjack Game
 
-A simple Blackjack game built using React and Vite. The game allows players to play Blackjack against a dealer, implementing the core game mechanics, win/loss detection, and visual feedback using animations like confetti.
+The game allows players to play Blackjack against a dealer, implementing the core game mechanics, win/loss detection, and visual feedback using animations like confetti. When users are logged in, they can see a live scoreboard that displays the top 10 players based on their scores, updated in real-time. Players' scores are tracked in a MongoDB database, and the game provides an engaging experience with the scoreboard showing the latest standings alongside the game.
 
 ## Description
 
@@ -13,11 +13,15 @@ This project includes Firebase authentication, allowing users to sign up, log in
 ## Features
 
 - Shuffle and deal cards randomly at the start of each game.
-- Allows the player to **Hit** (draw a card) or **Stand**.
+- Allows the player to Hit (draw a card) or Stand.
 - Dealer automatically draws cards until a total hand value of at least 17.
 - Detects and declares a win, loss, or tie.
 - Confetti animation when the player wins.
+- Top 10 Scoreboard: Displays the top 10 players with the highest scores when the user is logged in.
+- Player scores are tracked and updated in a MongoDB database.
 - Play Again button to restart the game.
+- User Authentication: Players need to sign up or log in to access the game and have their scores recorded.
+- Scores are saved with timestamps, and the most recent score is displayed on the scoreboard.
 
 ## Packages Used - Frontend
 

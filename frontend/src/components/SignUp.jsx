@@ -44,7 +44,6 @@ const SignUp = () => {
     if (!validateInputs()) return;
 
     try {
-      // Register the user with Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -52,17 +51,16 @@ const SignUp = () => {
       );
       const { user } = userCredential;
 
-      // Send the user data to the backend to store in MongoDB
       await axios.post("http://localhost:5000/api/users/register", {
         firstName,
         lastName,
         email,
-        password, // Send hashed password later on
-        uid: user.uid, // Firebase User ID
+        password,
+        uid: user.uid,
       });
 
       console.log("User created:", user);
-      navigate("/"); // Redirect after successful signup
+      navigate("/");
     } catch (error) {
       setError(error.message);
     }
@@ -70,11 +68,9 @@ const SignUp = () => {
 
   const handleGoogleSignup = async () => {
     try {
-      // Register the user using Google Authentication
       const userCredential = await signInWithPopup(auth, googleProvider);
       const { user } = userCredential;
 
-      // Send the user data to the backend
       await axios.post("http://localhost:5000/api/users/register", {
         firstName: user.displayName.split(" ")[0],
         lastName: user.displayName.split(" ")[1],

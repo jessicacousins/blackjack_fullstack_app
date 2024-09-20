@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Confetti from "react-confetti";
 import "./BlackjackGame.css";
+import axios from "axios";
 
 const suits = ["hearts", "diamonds", "clubs", "spades"];
 const values = [
@@ -55,7 +56,7 @@ const calculateHandValue = (hand) => {
   return value;
 };
 
-const BlackjackGame = () => {
+const BlackjackGame = ({ user }) => {
   const [deck, setDeck] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
@@ -164,7 +165,7 @@ const BlackjackGame = () => {
       }
 
       setDealerHand(newHand);
-      setDealerTotal(dealerValue); //  set the dealer's total
+      setDealerTotal(dealerValue); 
     }
   }, [playerTurn]);
 
@@ -173,6 +174,27 @@ const BlackjackGame = () => {
       checkForWinner();
     }
   }, [dealerHand]);
+
+ 
+  const updateScore = async (score) => {
+    try {
+      await axios.post("http://localhost:5000/api/users/update-score", {
+        email: user.email, 
+        score: score,
+      });
+      console.log("Score updated successfully");
+    } catch (error) {
+      console.error("Error updating score:", error);
+    }
+  };
+
+  // After game result
+  useEffect(() => {
+    if (gameOver && playerWins) {
+      const playerScore = calculateHandValue(playerHand);
+      updateScore(playerScore); // Update score only if player wins
+    }
+  }, [gameOver]);
 
   return (
     <div className="blackjack-game">

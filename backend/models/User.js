@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const ScoreSchema = new mongoose.Schema({
+  value: {
+    type: Number,
+    default: 0,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 const UserSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -29,6 +40,7 @@ const UserSchema = new mongoose.Schema({
   photoURL: {
     type: String,
   },
+  scores: [ScoreSchema], // Store multiple scores with dates
   lastLogin: {
     type: Date,
   },

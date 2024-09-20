@@ -3,6 +3,7 @@ import { auth } from "./firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import BlackjackGame from "./components/BlackjackGame";
 import SignUp from "./components/SignUp";
+import Scoreboard from "./components/Scoreboard";
 import "./App.css";
 
 function App() {
@@ -73,7 +74,10 @@ function App() {
 
       {user ? (
         <>
-          <BlackjackGame />
+          <div className="main-content">
+            <Scoreboard />
+            <BlackjackGame user={user} />
+          </div>
           <button className="logout-button" onClick={handleLogout}>
             Logout
           </button>
