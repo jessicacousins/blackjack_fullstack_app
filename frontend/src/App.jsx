@@ -5,6 +5,7 @@ import BlackjackGame from "./components/BlackjackGame";
 import SignUp from "./components/SignUp";
 import Scoreboard from "./components/Scoreboard";
 import "./App.css";
+import "./NavBar.css";
 
 function App() {
   const [showRules, setShowRules] = useState(false);
@@ -36,9 +37,19 @@ function App() {
 
   return (
     <div className="App">
-      <button className="toggle-rules-button" onClick={toggleRules}>
-        {showRules ? "Hide Rules" : "Show Rules"}
-      </button>
+      <nav className="navbar">
+        <div className="navbar-logo">Blackjack Game</div>
+        <div className="navbar-links">
+          <button className="toggle-rules-button" onClick={toggleRules}>
+            {showRules ? "Hide Rules" : "Show Rules"}
+          </button>
+          {user ? (
+            <button className="logout-button" onClick={handleLogout}>
+              Logout
+            </button>
+          ) : null}
+        </div>
+      </nav>
 
       {showRules && (
         <div className="rules">
@@ -78,9 +89,6 @@ function App() {
             <Scoreboard />
             <BlackjackGame user={user} />
           </div>
-          <button className="logout-button" onClick={handleLogout}>
-            Logout
-          </button>
         </>
       ) : (
         <SignUp />
