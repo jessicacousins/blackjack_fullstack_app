@@ -4,7 +4,6 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 
 // @route POST /api/users/register
-// @desc Register a new user (including Google users)
 router.post("/register", async (req, res) => {
   const { firstName, lastName, email, password, phone, bio, photoURL } =
     req.body;
@@ -38,7 +37,6 @@ router.post("/register", async (req, res) => {
 });
 
 // @route POST /api/users/update
-// @desc Update user profile
 router.post("/update", async (req, res) => {
   const { email, firstName, lastName, phone, bio, photoURL } = req.body;
 
@@ -66,7 +64,6 @@ router.post("/update", async (req, res) => {
   }
 });
 
-// Get Top 10 Users by Score
 // Get Top 10 Users by Latest Score
 router.get("/top-scores", async (req, res) => {
   try {
@@ -93,10 +90,8 @@ router.get("/top-scores", async (req, res) => {
 });
 
 // Update Player Score
-// Backend route example (userRoutes.js)
-// Update Player Score
 router.post("/update-score", async (req, res) => {
-  const { email, score } = req.body;
+  const { email, score, didWin } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -104,13 +99,56 @@ router.post("/update-score", async (req, res) => {
       return res.status(404).json({ msg: "User not found" });
     }
 
+    // Increment games played
+    user.gamesPlayed += 1;
+
+    if (didWin) {
+      user.gamesWon += 1; // Increment games won
+      user.currentWinningStreak += 1; // Increment current streak
+      if (user.currentWinningStreak > user.longestWinningStreak) {
+        user.longestWinningStreak = user.currentWinningStreak; // Update longest streak
+      }
+    } else {
+      user.gamesLost += 1; // Increment games lost
+      user.currentWinningStreak = 0; // Reset current streak on loss
+    }
+
+    // Check if new score is the highest score
+    if (score > user.highestScore) {
+      user.highestScore = score;
+    }
+
     // Add the new score with the current date
     user.scores.push({ value: score });
+
     await user.save();
 
     res.status(200).json({ msg: "Score updated", user });
   } catch (error) {
     console.error("Error updating score:", error.message);
+    res.status(500).send("Server error");
+  }
+});
+
+// @route GET /api/users/stats/:email
+router.get("/stats/:email", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.params.email });
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    const stats = {
+      gamesPlayed: user.gamesPlayed,
+      gamesWon: user.gamesWon,
+      gamesLost: user.gamesLost,
+      highestScore: user.highestScore,
+      longestWinningStreak: user.longestWinningStreak,
+    };
+
+    res.json(stats);
+  } catch (error) {
+    console.error("Error fetching stats:", error.message);
     res.status(500).send("Server error");
   }
 });

@@ -27,22 +27,31 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: function () {
-      return this.password != null;
-    },
   },
-  phone: {
-    type: String,
+  scores: [ScoreSchema],
+  gamesPlayed: {
+    type: Number,
+    default: 0,
   },
-  bio: {
-    type: String,
+  gamesWon: {
+    type: Number,
+    default: 0,
   },
-  photoURL: {
-    type: String,
+  gamesLost: {
+    type: Number,
+    default: 0,
   },
-  scores: [ScoreSchema], // Store multiple scores with dates
-  lastLogin: {
-    type: Date,
+  highestScore: {
+    type: Number,
+    default: 0,
+  },
+  longestWinningStreak: {
+    type: Number,
+    default: 0,
+  },
+  currentWinningStreak: {
+    type: Number,
+    default: 0,
   },
 });
 

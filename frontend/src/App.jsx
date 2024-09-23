@@ -4,12 +4,14 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import BlackjackGame from "./components/BlackjackGame";
 import SignUp from "./components/SignUp";
 import Scoreboard from "./components/Scoreboard";
+import StatsDashboard from "./components/StatsDashboard";
 import "./App.css";
 import "./NavBar.css";
 
 function App() {
   const [showRules, setShowRules] = useState(false);
   const [user, setUser] = useState(null);
+  const [showStats, setShowStats] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -35,6 +37,10 @@ function App() {
     }
   };
 
+  const handleShowStats = () => {
+    setShowStats(!showStats);
+  };
+
   return (
     <div className="App">
       <nav className="navbar">
@@ -44,9 +50,14 @@ function App() {
             {showRules ? "Hide Rules" : "Show Rules"}
           </button>
           {user ? (
-            <button className="logout-button" onClick={handleLogout}>
-              Logout
-            </button>
+            <>
+              <button className="stats-button" onClick={handleShowStats}>
+                {showStats ? "Hide Stats" : "View Stats"}
+              </button>
+              <button className="logout-button" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
           ) : null}
         </div>
       </nav>
@@ -85,14 +96,19 @@ function App() {
 
       {user ? (
         <>
-          <div className="main-content">
-            <Scoreboard />
-            <BlackjackGame user={user} />
-          </div>
+          {showStats ? (
+            <StatsDashboard user={user} />
+          ) : (
+            <div className="main-content">
+              <Scoreboard />
+              <BlackjackGame user={user} />
+            </div>
+          )}
         </>
       ) : (
         <SignUp />
       )}
+
       <footer className="footer">
         <p>
           © {new Date().getFullYear()} Jessica Cousins. All rights reserved.
