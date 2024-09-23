@@ -138,3 +138,18 @@ body {
 .logout-button:active {
   transform: scale(0.98);
 }
+
+/* Footer */
+.footer {
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: absolute;
+  margin-left: 9rem;
+  bottom: 0;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 14px;
+}

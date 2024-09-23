@@ -93,6 +93,11 @@ function App() {
       ) : (
         <SignUp />
       )}
+      <footer className="footer">
+        <p>
+          © {new Date().getFullYear()} Jessica Cousins. All rights reserved.
+        </p>
+      </footer>
     </div>
   );
 }
